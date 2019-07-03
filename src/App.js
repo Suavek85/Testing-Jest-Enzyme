@@ -24,6 +24,14 @@ class App extends Component {
         >
           Increment counter
         </button>
+        <button style={{marginLeft: '50px'}}
+          onClick={() => {
+            this.setState({ counter: this.state.counter - 1 });
+          }}
+          data-test="decrement-button"
+        >
+          Decrement counter
+        </button>
       </div>
     );
   }
