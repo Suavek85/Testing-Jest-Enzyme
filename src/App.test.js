@@ -8,7 +8,10 @@ import { exportAllDeclaration } from "@babel/types";
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
 const setup = (props = {}, state = null) => {
-  return shallow(<App {...props} />);
+  //return shallow(<App {...props} />);
+  const wrapper = shallow(<App {...props} />);
+  if (state) wrapper.setState(state);
+  return wrapper
 };
 
 const findByTestAttr = (wrapper, val) => {
@@ -43,8 +46,20 @@ test("renders counter display", () => {
 
 test("counter starts at zero", () => {
   const wrapper = setup();
-  initialCounterState = wrapper.state('counter');
-  //expect(initialCounterState)
+  const initialCounterState = wrapper.state('counter');
+  expect(initialCounterState).toBe(0);
 });
 
-test("clicking button increments counter display", () => {});
+test("clicking button increments counter display", () => {
+const counter = 7;
+const wrapper = setup(null, { counter });
+
+//find button and click button
+const button = findByTestAttr(wrapper, 'increment-button');
+button.simulate('click');
+wrapper.update();
+
+//find display and test value
+const counterDisplay = findByTestAttr(wrapper, 'counter-display');
+expect(counterDisplay.text()).toContain(counter + 1);
+});
